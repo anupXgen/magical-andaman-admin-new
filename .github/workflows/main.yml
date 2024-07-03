@@ -1,0 +1,30 @@
+on: push
+name: CICD Pipeline
+jobs:
+  build:
+      name: Build
+      runs-on: ubuntu-latest
+      steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.0'
+  web-deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment: dev
+    concurrency: dev
+    steps:
+    - name: Get latest code
+      uses: actions/checkout@v3
+    
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+      with:
+        server: 3.129.190.179
+        username: pa_users
+        password: ${{ secrets.PRISTINE_ANDAMAN_FTP_SECRET }}
+        server-dir: admin/

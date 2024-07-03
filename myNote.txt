@@ -1,0 +1,78 @@
+1.     Registration        =======
+                                URL : http://localhost/pristineandaman-admin/public/api/register
+				METHOD : POST
+				REQUEST : body/raw/json
+						{
+    							"name":"sayan",
+    							"email":"sayan@xgenmedia.com",
+    							"password":"12345678"
+					   	}
+2.     Login        	  =======
+                                URL : http://localhost/pristineandaman-admin/public/api/login
+				METHOD : POST
+				REQUEST : body/raw/json
+						{
+    							"email":"sayan@xgenmedia.com",
+    							"password":"12345678"
+					   	}
+				RESPONSE : access token with user data.
+3.     Package List          =======
+                                URL : http://localhost/pristineandaman-admin/public/api/packagelist
+				      http://localhost/pristineandaman-admin/public/api/packagelist/8
+				METHOD : POST
+				REQUEST : body/raw/json
+						{
+    							"search_txt":"family package",
+    							"per_page":"5",////use only for pagination (always >0)
+    							"page_no":"1"////use only for pagination (always >0)
+					   	}
+				RESPONSE : post info with all related type itinerary policies info
+4.     Testimonial List          =======
+                                URL : http://localhost/pristineandaman-admin/public/api/testimoniallist
+				      http://localhost/pristineandaman-admin/public/api/testimoniallist/8
+				METHOD : POST
+				REQUEST : body/raw/json
+						{
+    							"search_txt":"family",
+    							"per_page":"5",////use only for pagination (always >0)
+    							"page_no":"1"////use only for pagination (always >0)
+					   	}
+				RESPONSE : Testimonials info
+
+5.     SightSeeing List          =======
+                                URL : http://localhost/pristineandaman-admin/public/api/sightseeinglist
+				      http://localhost/pristineandaman-admin/public/api/sightseeinglist/8
+				METHOD : POST
+				REQUEST : body/raw/json
+						{
+    							"search_txt":"scuba",
+							"location_id":4,
+    							"per_page":"5",////use only for pagination (always >0)
+    							"page_no":"1"////use only for pagination (always >0)
+					   	}
+				RESPONSE : Sightseeing info
+5.     Cab List          	 =======
+                                URL : http://localhost/pristineandaman-admin/public/api/cablist
+				      http://localhost/pristineandaman-admin/public/api/cablist/8
+				METHOD : POST
+				REQUEST : body/raw/json
+						{
+    							"search_txt":"scuba",
+    							"per_page":"5",////use only for pagination (always >0)
+    							"page_no":"1"////use only for pagination (always >0)
+					   	}
+				RESPONSE : Cab info
+5.     Location List          	 =======
+                                URL : http://localhost/pristineandaman-admin/public/api/locationlist
+				      http://localhost/pristineandaman-admin/public/api/locationlist/8
+				METHOD : POST
+				REQUEST : body/raw/json
+						{
+    							"search_txt":"neil",
+    							"per_page":"5",////use only for pagination (always >0)
+    							"page_no":"1"////use only for pagination (always >0)
+					   	}
+				RESPONSE : Destination info
+
+                                
+ 

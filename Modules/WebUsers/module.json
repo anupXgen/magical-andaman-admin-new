@@ -1,0 +1,11 @@
+{
+    "name": "WebUsers",
+    "alias": "webusers",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\WebUsers\\Providers\\WebUsersServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,11 @@
+{
+    "name": "HotelCategory",
+    "alias": "hotelcategory",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\HotelCategory\\Providers\\HotelCategoryServiceProvider"
+    ],
+    "files": []
+}

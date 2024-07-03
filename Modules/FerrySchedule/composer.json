@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/ferryschedule",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\FerrySchedule\\": "",
+            "Modules\\FerrySchedule\\App\\": "app/",
+            "Modules\\FerrySchedule\\Database\\Factories\\": "database/factories/",
+            "Modules\\FerrySchedule\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\FerrySchedule\\Tests\\": "tests/"
+        }
+    }
+}

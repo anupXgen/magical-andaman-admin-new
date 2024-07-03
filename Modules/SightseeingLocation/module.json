@@ -1,0 +1,11 @@
+{
+    "name": "SightseeingLocation",
+    "alias": "sightseeinglocation",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SightseeingLocation\\Providers\\SightseeingLocationServiceProvider"
+    ],
+    "files": []
+}

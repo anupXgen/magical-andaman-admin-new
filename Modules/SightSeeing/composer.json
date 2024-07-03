@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/sightseeing",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\SightSeeing\\": "",
+            "Modules\\SightSeeing\\App\\": "app/",
+            "Modules\\SightSeeing\\Database\\Factories\\": "database/factories/",
+            "Modules\\SightSeeing\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\SightSeeing\\Tests\\": "tests/"
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/hotelcategory",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\HotelCategory\\": "",
+            "Modules\\HotelCategory\\App\\": "app/",
+            "Modules\\HotelCategory\\Database\\Factories\\": "database/factories/",
+            "Modules\\HotelCategory\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\HotelCategory\\Tests\\": "tests/"
+        }
+    }
+}

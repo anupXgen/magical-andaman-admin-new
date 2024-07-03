@@ -1,0 +1,11 @@
+{
+    "name": "SightSeeing",
+    "alias": "sightseeing",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\SightSeeing\\Providers\\SightSeeingServiceProvider"
+    ],
+    "files": []
+}

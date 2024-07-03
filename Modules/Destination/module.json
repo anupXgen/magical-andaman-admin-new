@@ -1,0 +1,11 @@
+{
+    "name": "Destination",
+    "alias": "destination",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Destination\\Providers\\DestinationServiceProvider"
+    ],
+    "files": []
+}

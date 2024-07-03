@@ -1,0 +1,11 @@
+{
+    "name": "Tourlocation",
+    "alias": "tourlocation",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Tourlocation\\Providers\\TourlocationServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,11 @@
+{
+    "name": "Contactus",
+    "alias": "contactus",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\Contactus\\Providers\\ContactusServiceProvider"
+    ],
+    "files": []
+}

@@ -1,0 +1,11 @@
+{
+    "name": "PnrStatus",
+    "alias": "pnrstatus",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PnrStatus\\Providers\\PnrStatusServiceProvider"
+    ],
+    "files": []
+}

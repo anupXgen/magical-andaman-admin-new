@@ -1,0 +1,11 @@
+{
+    "name": "BoatSchedule",
+    "alias": "boatschedule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\BoatSchedule\\Providers\\BoatScheduleServiceProvider"
+    ],
+    "files": []
+}

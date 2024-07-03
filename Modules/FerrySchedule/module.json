@@ -1,0 +1,11 @@
+{
+    "name": "FerrySchedule",
+    "alias": "ferryschedule",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\FerrySchedule\\Providers\\FerryScheduleServiceProvider"
+    ],
+    "files": []
+}
