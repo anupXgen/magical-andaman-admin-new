@@ -24,7 +24,7 @@ jobs:
     - name: 📂 Sync files
       uses: SamKirkland/FTP-Deploy-Action@v4.3.4
       with:
-        server: 3.129.190.179
-        username: pa_users
-        password: ${{ secrets.PRISTINE_ANDAMAN_FTP_SECRET }}
-        server-dir: admin/
+        server: 54.153.205.124
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: /uat/admin/
