@@ -48,13 +48,13 @@ class testimonialController extends Controller
         $insertarray['subtitle'] = $input['subtitle'];
         $insertarray['designation'] = $input['designation'];
         if (!empty($request->input('testimonial_img'))) {
-            $path2 = public_path('uploads\testimonial');
+            $path2 = public_path('uploads/testimonial');
             if (!file_exists($path2)) {
                 mkdir($path2, 0777, true);
             }
             foreach ($request->input('testimonial_img', []) as $file) {
-                $old_path = public_path('uploads\tmp') . '\\' . $file;
-                $new_path = public_path('uploads\testimonial') . '\\' . $file;
+                $old_path = public_path('uploads/tmp') . '/' . $file;
+                $new_path = public_path('uploads/testimonial') . '/' . $file;
                 $move = File::move($old_path, $new_path);
                 $insertarray['path'] = 'uploads/testimonial/' . $file;
                 $insertarray['size'] = filesize($new_path);
@@ -64,7 +64,7 @@ class testimonialController extends Controller
         $inserted_id = $result->id;
         if (!empty($request->input('remove_testimonial_img', []))) {
             foreach ($request->input('remove_testimonial_img', []) as $deletefile) {
-                $image_path = public_path('uploads\testimonial') . '\\' . $deletefile;
+                $image_path = public_path('uploads/testimonial') . '/' . $deletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
@@ -94,13 +94,13 @@ class testimonialController extends Controller
         $insertarray['subtitle'] = $input['subtitle'];
         $insertarray['designation'] = $input['designation'];
         if (!empty($request->input('testimonial_img'))) {
-            $path2 = public_path('uploads\testimonial');
+            $path2 = public_path('uploads/testimonial');
             if (!file_exists($path2)) {
                 mkdir($path2, 0777, true);
             }
             foreach ($request->input('testimonial_img', []) as $file) {
-                $old_path = public_path('uploads\tmp') . '\\' . $file;
-                $new_path = public_path('uploads\testimonial') . '\\' . $file;
+                $old_path = public_path('uploads/tmp') . '/' . $file;
+                $new_path = public_path('uploads/testimonial') . '/' . $file;
                 $move = File::move($old_path, $new_path);
                 $insertarray['path'] = 'uploads/testimonial/' . $file;
                 $insertarray['size'] = filesize($new_path);
@@ -109,7 +109,7 @@ class testimonialController extends Controller
         $result = Testimonial::find($id)->update($insertarray);
         if (!empty($request->input('remove_testimonial_img', []))) {
             foreach ($request->input('remove_testimonial_img', []) as $deletefile) {
-                $image_path = public_path('uploads\testimonial') . '\\' . $deletefile;
+                $image_path = public_path('uploads/testimonial') . '/' . $deletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
@@ -117,7 +117,7 @@ class testimonialController extends Controller
         }
         if (!empty($request->input('exists_remove_testimonial_img', []))) {
             foreach ($request->input('exists_remove_testimonial_img', []) as $key => $existsdeletefile) {
-                $image_path = public_path('uploads\testimonial') . '\\' . $existsdeletefile;
+                $image_path = public_path('uploads/testimonial') . '/' . $existsdeletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }

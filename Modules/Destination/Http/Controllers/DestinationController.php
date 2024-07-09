@@ -47,13 +47,13 @@ class DestinationController extends Controller
         $insertarray['name'] = $input['name'];
         $insertarray['subtitle'] = $input['subtitle'];
         if (!empty($request->input('destination_img'))) {
-            $path2 = public_path('uploads\destination');
+            $path2 = public_path('uploads/destination');
             if (!file_exists($path2)) {
                 mkdir($path2, 0777, true);
             }
             foreach ($request->input('destination_img', []) as $file) {
-                $old_path = public_path('uploads\tmp') . '\\' . $file;
-                $new_path = public_path('uploads\destination') . '\\' . $file;
+                $old_path = public_path('uploads/tmp') . '/' . $file;
+                $new_path = public_path('uploads/destination') . '/' . $file;
                 $move = File::move($old_path, $new_path);
                 $insertarray['path'] = 'uploads/destination/' . $file;
                 $insertarray['size'] = filesize($new_path);
@@ -63,7 +63,7 @@ class DestinationController extends Controller
         $inserted_id = $result->id;
         if (!empty($request->input('remove_destination_img', []))) {
             foreach ($request->input('remove_destination_img', []) as $deletefile) {
-                $image_path = public_path('uploads\destination') . '\\' . $deletefile;
+                $image_path = public_path('uploads/destination') . '/' . $deletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
@@ -92,13 +92,13 @@ class DestinationController extends Controller
         $insertarray['name'] = $input['name'];
         $insertarray['subtitle'] = $input['subtitle'];
         if (!empty($request->input('destination_img'))) {
-            $path2 = public_path('uploads\destination');
+            $path2 = public_path('uploads/destination');
             if (!file_exists($path2)) {
                 mkdir($path2, 0777, true);
             }
             foreach ($request->input('destination_img', []) as $file) {
-                $old_path = public_path('uploads\tmp') . '\\' . $file;
-                $new_path = public_path('uploads\destination') . '\\' . $file;
+                $old_path = public_path('uploads/tmp') . '/' . $file;
+                $new_path = public_path('uploads/destination') . '/' . $file;
                 $move = File::move($old_path, $new_path);
                 $insertarray['path'] = 'uploads/destination/' . $file;
                 $insertarray['size'] = filesize($new_path);
@@ -107,7 +107,7 @@ class DestinationController extends Controller
         $result = Destination::find($id)->update($insertarray);
         if (!empty($request->input('remove_destination_img', []))) {
             foreach ($request->input('remove_destination_img', []) as $deletefile) {
-                $image_path = public_path('uploads\destination') . '\\' . $deletefile;
+                $image_path = public_path('uploads/destination') . '/' . $deletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
@@ -115,7 +115,7 @@ class DestinationController extends Controller
         }
         if (!empty($request->input('exists_remove_destination_img', []))) {
             foreach ($request->input('exists_remove_destination_img', []) as $key => $existsdeletefile) {
-                $image_path = public_path('uploads\destination') . '\\' . $existsdeletefile;
+                $image_path = public_path('uploads/destination') . '/' . $existsdeletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }

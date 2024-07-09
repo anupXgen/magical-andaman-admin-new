@@ -107,7 +107,7 @@ class BannerController extends Controller
     {
         // $allFile = $request->file('banner');
         // echo "<pre>";print_r($allFile);die;
-        $path = public_path('uploads\tmp');
+        $path = public_path('uploads/tmp');
         //$path2 = public_path('uploads\home_banner');
         if (!file_exists($path)) {
             mkdir($path, 0777, true);
@@ -148,14 +148,14 @@ class BannerController extends Controller
         $result = Banner::create($insertarray);
         $inserted_id = $result->id;
         if ($result) {
-            $path2 = public_path('uploads\home_banner');
+            $path2 = public_path('uploads/home_banner');
             if (!file_exists($path2)) {
                 mkdir($path2, 0777, true);
             }
             if (!empty($request->input('banner_img', []))) {
                 foreach ($request->input('banner_img', []) as $file) {
-                    $old_path = public_path('uploads\tmp') . '\\' . $file;
-                    $new_path = public_path('uploads\home_banner') . '\\' . $file;
+                    $old_path = public_path('uploads/tmp') . '/' . $file;
+                    $new_path = public_path('uploads/home_banner') . '/' . $file;
                     $move = File::move($old_path, $new_path);
                     $insertimage['parent_id'] = $inserted_id;
                     $insertimage['path'] = 'uploads/home_banner/' . $file;
@@ -165,7 +165,7 @@ class BannerController extends Controller
             }
             if (!empty($request->input('remove_banner_img', []))) {
                 foreach ($request->input('remove_banner_img', []) as $deletefile) {
-                    $image_path = public_path('uploads\home_banner') . '\\' . $deletefile;
+                    $image_path = public_path('uploads/home_banner') . '/' . $deletefile;
                     if (File::exists($image_path)) {
                         File::delete($image_path);
                     }
@@ -207,8 +207,8 @@ class BannerController extends Controller
         if ($result) {
             if (!empty($request->input('banner_img', []))) {
                 foreach ($request->input('banner_img', []) as $file) {
-                    $old_path = public_path('uploads\tmp') . '\\' . $file;
-                    $new_path = public_path('uploads\home_banner') . '\\' . $file;
+                    $old_path = public_path('uploads/tmp') . '/' . $file;
+                    $new_path = public_path('uploads/home_banner') . '/' . $file;
                     $move = File::move($old_path, $new_path);
                     $insertimage['parent_id'] = $id;
                     $insertimage['path'] = 'uploads/home_banner/' . $file;
@@ -218,7 +218,7 @@ class BannerController extends Controller
             }
             if (!empty($request->input('exists_remove_banner_img', []))) {
                 foreach ($request->input('exists_remove_banner_img', []) as $key => $existsdeletefile) {
-                    $image_path = public_path('uploads\home_banner') . '\\' . $existsdeletefile;
+                    $image_path = public_path('uploads/home_banner') . '/' . $existsdeletefile;
                     if (File::exists($image_path)) {
                         File::delete($image_path);
                         Bannerimage::where('id', $key)->where('parent_id', $id)->delete();
@@ -227,7 +227,7 @@ class BannerController extends Controller
             }
             if (!empty($request->input('remove_banner_img', []))) {
                 foreach ($request->input('remove_banner_img', []) as $deletefile) {
-                    $image_path = public_path('uploads\home_banner') . '\\' . $deletefile;
+                    $image_path = public_path('uploads/home_banner') . '/' . $deletefile;
                     if (File::exists($image_path)) {
                         File::delete($image_path);
                     }

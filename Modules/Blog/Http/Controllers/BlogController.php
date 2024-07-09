@@ -50,13 +50,13 @@ class BlogController extends Controller
         $insertarray['subtitle'] = $input['subtitle'];
         $insertarray['author_name'] = $input['author'];
         if (!empty($request->input('blog_img'))) {
-            $path2 = public_path('uploads\blog');
+            $path2 = public_path('uploads/blog');
             if (!file_exists($path2)) {
                 mkdir($path2, 0777, true);
             }
             foreach ($request->input('blog_img', []) as $file) {
-                $old_path = public_path('uploads\tmp') . '\\' . $file;
-                $new_path = public_path('uploads\blog') . '\\' . $file;
+                $old_path = public_path('uploads/tmp') . '/' . $file;
+                $new_path = public_path('uploads/blog') . '/' . $file;
                 $move = File::move($old_path, $new_path);
                 $insertarray['path'] = 'uploads/blog/' . $file;
                 $insertarray['size'] = filesize($new_path);
@@ -66,7 +66,7 @@ class BlogController extends Controller
         $inserted_id = $result->id;
         if (!empty($request->input('remove_blog_img', []))) {
             foreach ($request->input('remove_blog_img', []) as $deletefile) {
-                $image_path = public_path('uploads\blog') . '\\' . $deletefile;
+                $image_path = public_path('uploads/blog') . '/' . $deletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
@@ -97,13 +97,13 @@ class BlogController extends Controller
         $insertarray['author_name'] = $input['author'];
         $insertarray['subtitle'] = $input['subtitle'];
         if (!empty($request->input('blog_img'))) {
-            $path2 = public_path('uploads\blog');
+            $path2 = public_path('uploads/blog');
             if (!file_exists($path2)) {
                 mkdir($path2, 0777, true);
             }
             foreach ($request->input('blog_img', []) as $file) {
-                $old_path = public_path('uploads\tmp') . '\\' . $file;
-                $new_path = public_path('uploads\blog') . '\\' . $file;
+                $old_path = public_path('uploads/tmp') . '/' . $file;
+                $new_path = public_path('uploads/blog') . '/' . $file;
                 $move = File::move($old_path, $new_path);
                 $insertarray['path'] = 'uploads/blog/' . $file;
                 $insertarray['size'] = filesize($new_path);
@@ -112,7 +112,7 @@ class BlogController extends Controller
         $result = Blog::find($id)->update($insertarray);
         if (!empty($request->input('remove_blog_img', []))) {
             foreach ($request->input('remove_blog_img', []) as $deletefile) {
-                $image_path = public_path('uploads\blog') . '\\' . $deletefile;
+                $image_path = public_path('uploads/blog') . '/' . $deletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
@@ -120,7 +120,7 @@ class BlogController extends Controller
         }
         if (!empty($request->input('exists_remove_blog_img', []))) {
             foreach ($request->input('exists_remove_blog_img', []) as $key => $existsdeletefile) {
-                $image_path = public_path('uploads\blog') . '\\' . $existsdeletefile;
+                $image_path = public_path('uploads/blog') . '/' . $existsdeletefile;
                 if (File::exists($image_path)) {
                     File::delete($image_path);
                 }
