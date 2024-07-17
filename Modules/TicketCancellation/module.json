@@ -1,0 +1,11 @@
+{
+    "name": "TicketCancellation",
+    "alias": "ticketcancellation",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\TicketCancellation\\Providers\\TicketCancellationServiceProvider"
+    ],
+    "files": []
+}

@@ -32,5 +32,6 @@
     "Test": true,
     "Tourlocation": true,
     "BoatSchedule": true,
-    "PnrStatus": true
+    "PnrStatus": true,
+    "TicketCancellation": true
 }

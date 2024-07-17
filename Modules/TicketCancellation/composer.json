@@ -1,0 +1,31 @@
+{
+    "name": "nwidart/ticketcancellation",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\TicketCancellation\\": "",
+            "Modules\\TicketCancellation\\App\\": "app/",
+            "Modules\\TicketCancellation\\Database\\Factories\\": "database/factories/",
+            "Modules\\TicketCancellation\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\TicketCancellation\\Tests\\": "tests/"
+        }
+    }
+}
