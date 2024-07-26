@@ -58,7 +58,7 @@
                         @if ($ferry_schedules->isEmpty())
                             <p>No schedules found.</p>
                         @else
-                            <table id="" class="table table-bordered text-nowrap w-100 mb-2">
+                            <table id="" class="table table-striped w-100 mb-2">
                                 <thead>
                                     <tr>
                                         <th>No</th>
@@ -83,31 +83,32 @@
                                             <td>{{ date('d M, y H:i', strtotime($ferry_schedule->from_date)) }}</td>
                                             <td>{{ date('d M, y H:i', strtotime($ferry_schedule->to_date)) }}</td>
                                             <td>{{ $ferry_schedule->ship_master_title }}</td>
-
+                                           
                                             <td>
                                                 @if ($ferry_schedule->status == 'Y')
-                                                    <span class="badge bg-success">YES</span>
+                                                    <span  class="btn btn-success btn-sm">YES</span>
                                                 @else
-                                                    <span class="badge bg-warning">NO</span>
+                                                    <span class="btn btn-danger btn-sm">NO</span>
                                                 @endif
                                             </td>
-
                                             <td>
-                                                <a class="btn btn-info"
-                                                    href="{{ route('ferryschedule.show', $ferry_schedule->id) }}">Show</a>
-                                                @can('banner-edit')
-                                                    <a class="btn btn-primary"
-                                                        href="{{ route('ferryschedule.edit', $ferry_schedule->id) }}">Edit</a>
+                                                <a class="btn"
+                                                    href="{{ route('ferryschedule.show', $ferry_schedule->id) }}"><i
+                                                        class='bx bxs-show fs-4'></i></a>
+                                                @can('ferryschedule-edit')
+                                                    <a class="btn "
+                                                        href="{{ route('ferryschedule.edit', $ferry_schedule->id) }}"><i
+                                                            class='bx bxs-edit fs-4'></i></a>
                                                 @endcan
-                                                @can('banner-delete')
-                                                    {!! Form::open([
-                                                        'method' => 'DELETE',
-                                                        'route' => ['ferryschedule.destroy', $ferry_schedule->id],
-                                                        'style' => 'display:inline',
-                                                        'onsubmit' => 'return confirmDelete()',
-                                                    ]) !!}
-                                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                                                    {!! Form::close() !!}
+                                        
+                                                @can('ferryschedule-delete')
+                                                {!! Form::open(['method' => 'DELETE', 'route' => ['ferryschedule.destroy', $ferry_schedule->id], 'style' => 'display:inline']) !!}
+                                                {!! Form::button('<i class="bx bxs-trash-alt"></i>', [
+                                                    'type' => 'submit',
+                                                    'class' => 'btn',
+                                                    'onclick' => 'return confirmDelete()',
+                                                ]) !!}
+                                                {!! Form::close() !!}
                                                 @endcan
                                             </td>
                                         </tr>

@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="card-body">
-          <table id="" class="table table-bordered text-nowrap w-100 mb-2">
+          <table id="" class="table table-striped w-100 mb-2">
             <thead>
               <tr>
                 <th>No</th>
@@ -56,7 +56,7 @@
               <tr>
                 <td>{{ ++$i }}</td>
                 <td>{{ ucfirst($role->name) }}</td>
-                <td>
+                {{-- <td>
                   <a class="btn btn-info" href="{{ route('role.show',$role->id) }}">Show</a>
                   @can('role-edit')
                   <a class="btn btn-primary" href="{{ route('role.edit',$role->id) }}">Edit</a>
@@ -66,7 +66,33 @@
                   {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                   {!! Form::close() !!}
                   @endcan
-                </td>
+                </td> --}}
+                <td>
+                  <a class="btn"
+                      href="{{ route('role.show', $role->id) }}"><i
+                          class='bx bxs-show fs-4'></i></a>
+                  @can('role-edit')
+                      <a class="btn "
+                          href="{{ route('role.edit', $role->id) }}"><i
+                              class='bx bxs-edit fs-4'></i></a>
+                  @endcan
+          
+                  @can('role-delete')
+                      {!! Form::open([
+                          'method' => 'DELETE',
+                          'onsubmit' => 'return confirmDelete()',
+                          'route' => ['role.destroy', $role->id],
+                          'style' => 'display:inline',
+                      ]) !!}
+                      {!! Form::button('<i class="bx bxs-trash-alt"></i>', [
+                          'type' => 'submit',
+                          'class' => 'btn',
+                          'onclick' => 'return confirmDelete()',
+                      ]) !!}
+                      {!! Form::close() !!}
+                  @endcan
+              </td>
+
               </tr>
               @endforeach
               @endif
@@ -77,5 +103,10 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this item?');
+    }
+</script>
 
   @endsection

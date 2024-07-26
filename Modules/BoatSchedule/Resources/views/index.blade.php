@@ -22,11 +22,11 @@
                         <div class="d-sm-flex d-block align-items-center justify-content-between">
                             <div class="h5 fw-semibold mb-0">Boat Management</div>
                             <div class="d-flex mt-sm-0 mt-2 align-items-center">
-                                <form id='searchform' name='searchform' action=''>
+                                <form id='searchform' name='searchform' action='{{route('boatschedule.index')}}'>
                                     <div class="input-group">
                                         <input type="text" class="form-control bg-light border-0"
-                                            placeholder="Search banner" aria-describedby="search-contact-member"
-                                            id='search_txt' name='search_txt'>
+                                            placeholder="Search Boat Title" aria-describedby="search-contact-member"
+                                            id='search_txt' name='search_txt' value="{{ request()->query('search_txt')}}">
                                         <button class="btn btn-light" type="submit" id="search-banner"><i
                                                 class="ri-search-line text-muted"></i></button>
                                     </div>
@@ -53,7 +53,7 @@
                             {{ session('error') }}
                         </div>
                     @endif
-                        <table id="" class="table table-bordered text-nowrap w-100 mb-2">
+                        <table id="" class="table table-striped text-nowrap w-100 mb-2">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -67,9 +67,12 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @php
+                                    $i = 1;
+                                @endphp
                                 @foreach ($boat_schedules as $boat_schedule)
                                     <tr>
-                                        <td>{{ $boat_schedule->id }}</td>
+                                        <td>{{ $i++}}</td>
                                         <td>{{ $boat_schedule->title}}</td>
                                         <td>
                                             @if ($boat_schedule->image)
@@ -79,21 +82,27 @@
                                         </td>
                                         <td>{{ date('d M, y H:i', strtotime($boat_schedule->from_date)) }}</td>
                                         <td>{{ date('d M, y H:i', strtotime($boat_schedule->to_date)) }}</td>
-                                        <td>{{$boat_schedule->price}}</td>
+                                        <td>
+                                            @if (is_null($boat_schedule->price))
+                                                {{ $boat_schedule->per_passenger_price }}
+                                            @else
+                                                {{ $boat_schedule->price }}
+                                            @endif
+                                        </td>
                                         <td>
                                             @if($boat_schedule->status == 'Y')
-                                            <span class="badge bg-primary">Active</span>
+                                            <span class="btn btn-success btn-sm">Active</span>
                                             @else
-                                            <span class="badge bg-success">Inactive</span>
+                                            <span class="btn btn-danger btn-sm">Inactive</span>
                                             @endif
                                         </td>
                                       
-                                        <td>
+                                        {{-- <td>
                                           <a class="btn btn-info"
-                                              href="{{ route('boatschedule.show', $boat_schedule->id) }}">Show</a>
+                                              href="{{ route('boatschedule.show', $boat_schedule->id ) }}">Show</a>
                                    
                                               <a class="btn btn-primary"
-                                                  href="{{ route('boatschedule.edit', $boat_schedule->id) }}">Edit</a>
+                                                  href="{{ route('boatschedule.edit', $boat_schedule->id )}}">Edit</a>
                                     
                                               {!! Form::open([
                                                   'method' => 'DELETE',
@@ -103,7 +112,27 @@
                                               ]) !!}
                                               {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                                               {!! Form::close() !!}                              
-                                      </td>
+                                      </td> --}}
+
+                                      <td>
+                                        <a class="btn"
+                                            href="{{ route('boatschedule.show', $boat_schedule->id) }}"><i
+                                                class='bx bxs-show fs-4'></i></a>
+                                        
+                                            <a class="btn "
+                                                href="{{ route('boatschedule.edit', $boat_schedule->id) }}"><i
+                                                    class='bx bxs-edit fs-4'></i></a>
+                                        
+                                
+                                                    {!! Form::open(['method' => 'DELETE', 'route' => ['boatschedule.destroy', $boat_schedule->id], 'style' => 'display:inline']) !!}
+                                                    {!! Form::button('<i class="bx bxs-trash-alt"></i>', [
+                                                        'type' => 'submit',
+                                                        'class' => 'btn',
+                                                        'onclick' => 'return confirmDelete()',
+                                                    ]) !!}
+                                                    {!! Form::close() !!}
+                                    </td>
+                      
 
                                     
                                     </tr>

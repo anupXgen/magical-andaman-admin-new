@@ -94,8 +94,8 @@
 
                                     <div class="col-md-6">
                                         <label class="form-label">Departure Time </label>
-                                        <input type="text" class="form-control" id="departure_time" name="departure_time"
-                                            placeholder="HH:MM:SS" value="{{old('departure_time')}}">
+                                        <input type="time" class="form-control" id="departure_time" name="departure_time"
+                                            placeholder="HH:MM:SS"  value="{{old('departure_time')}}" step="1">
                                         <span class="text-danger">
                                             @error('departure_time')
                                                 {{ $message }}
@@ -105,8 +105,8 @@
                                     {{-- Test --}}
                                     <div class="col-md-6">
                                         <label class="form-label">Arrival Time </label>
-                                        <input type="text" class="form-control" id="arrival_time" name="arrival_time"
-                                            placeholder="HH:MM:SS"  value="{{old('arrival_time')}}">
+                                        <input type="time" class="form-control" id="arrival_time" name="arrival_time"
+                                            placeholder="HH:MM:SS"  value="{{old('arrival_time')}}" step="1">
                                         <span class="text-danger">
                                             @error('arrival_time')
                                                 {{ $message }}
@@ -134,7 +134,6 @@
                                     <div class="col-md-6">
                                         <label class="form-label">Status</label>
                                         <select class="form-control" id="status" name="status">
-                                            <option value="">Select</option>
                                             <option value="Y" {{ old('status', '') == 'Y'? 'selected' : '' }}>Yes</option>
                                             <option value="N" {{ old('status', '') == 'N'? 'selected' : '' }}>No</option>
                                         </select>

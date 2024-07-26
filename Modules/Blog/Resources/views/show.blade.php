@@ -53,7 +53,7 @@
                                 @if(isset($blog['path']) && $blog['path'])
                                 <div class="col-3 px-1" style="height: 200px; overflow: hidden;">
                                     <label class="form-label"></label>
-                                    <img src="{{ url('/') .'/'.  $blog['path']; }}" width="100%" height="100%" alt="Girl in a jacket">
+                                    <img src="{{ url('/uploads/blog', $blog['path']) }}" alt="hello" width="200px">
                                 </div>
                                 @endif
                             </div>

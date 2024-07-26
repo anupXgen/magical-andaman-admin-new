@@ -20,7 +20,7 @@
             <div class="card custom-card">
                 <div class="card-header d-block">
                     <div class="d-sm-flex d-block align-items-center justify-content-between">
-                        <div class="h5 fw-semibold mb-0">Turist Create</div>
+                        <div class="h5 fw-semibold mb-0">Tour Location Create</div>
                         <div class="d-flex mt-sm-0 mt-2 align-items-center">
                             <a href="{{ route('tourlocation.index') }}" class="btn btn-warning-light ms-2">Back</a>
                         </div>

@@ -4,5 +4,5 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('boatschedule','BoatScheduleController')->names('boatschedule');
+    Route::resource('boatschedule','BoatScheduleController');
 });

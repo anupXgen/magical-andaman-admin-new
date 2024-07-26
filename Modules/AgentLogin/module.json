@@ -1,0 +1,11 @@
+{
+    "name": "AgentLogin",
+    "alias": "agentlogin",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\AgentLogin\\Providers\\AgentLoginServiceProvider"
+    ],
+    "files": []
+}

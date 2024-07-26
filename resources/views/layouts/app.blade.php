@@ -13,7 +13,8 @@
 
     <!-- Favicon -->
     <link rel="icon" href="../assets/images/brand-logos/favicon.ico" type="image/x-icon">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <!-- Choices JS -->
     <script src="{{ url('assets/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
 
@@ -36,7 +37,8 @@
     <link href="{{ url('assets/libs/simplebar/simplebar.min.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/boxicons@latest/css/boxicons.min.css">
-
+    
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
 
     <!-- Color Picker Css -->
     <!-- <link rel="stylesheet" href="../assets/libs/flatpickr/flatpickr.min.css"> -->
@@ -723,8 +725,11 @@
     <!-- <script src="{{ url('assets/libs/dropzone/dropzone-min.js') }}"></script> -->
 
     <!-- <script src="{{ url('assets/js/fileupload.js') }}"></script> -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script src="{{ url('assets/js/custom.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <!-- <script src="https://unpkg.com/filepond-plugin-image-preview@4.2.1/dist/filepond-plugin-image-preview.js"></script>
     <script src="https://unpkg.com/filepond@4.4.10/dist/filepond.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.5.1/min/dropzone.min.js"></script>

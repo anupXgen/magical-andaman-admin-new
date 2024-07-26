@@ -42,7 +42,7 @@
           </div>
         </div>
         <div class="card-body">
-          <table id="" class="table table-bordered text-nowrap w-100 mb-2">
+          <table id="" class="table table-striped w-100 mb-2">
             <thead>
               <tr>
                 <th>No</th>
@@ -59,17 +59,20 @@
                 <td>{{ $menu->base_url }}</td>
                 <td>
                   <form action="{{ route('menu.destroy',$menu->id) }}" method="POST">
-                    <a class="btn btn-info" href="{{ route('menu.show',$menu->id) }}">Show</a>
+                    <a class="btn" href="{{ route('menu.show',$menu->id) }}"><i
+                      class='bx bxs-show fs-4'></i></a>
                     @can('menu-edit')
-                    <a class="btn btn-primary" href="{{ route('menu.edit',$menu->id) }}">Edit</a>
+                    <a class="btn" href="{{ route('menu.edit',$menu->id) }}"><i
+                      class='bx bxs-edit fs-4'></a>
                     @endcan
                     @csrf
                     @method('DELETE')
                     @can('menu-delete')
-                    <button type="submit" class="btn btn-danger">Delete</button>
+                    <button type="submit" class="btn"><i class="bx bxs-trash-alt"></i></button>
                     @endcan
                   </form>
                 </td>
+            
               </tr>
               @endforeach
             </tbody>
@@ -79,5 +82,11 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this item?');
+    }
+</script>
+
 
   @endsection

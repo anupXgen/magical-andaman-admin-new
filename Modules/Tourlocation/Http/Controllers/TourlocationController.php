@@ -14,12 +14,36 @@ class TourlocationController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
-    {
-        $locations = DB::table('locations')->get();
-        $data = compact('locations');
-        return view('tourlocation::index')->with($data);
+    // public function index()
+    // {
+
+    //     $locations = DB::table('locations')->get();
+
+    //     if (!empty($request->input('search_txt'))) {
+    //         $search = $request->input('search_txt');
+    //     }
+    //     $data = compact('locations');
+    //     return view('tourlocation::index')->with($data);
+    // }
+    public function index(Request $request)
+{
+
+    $query = DB::table('locations');
+
+    if ($request->has('search_txt') && !empty($request->input('search_txt'))) {
+        $search = $request->input('search_txt');
+
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+              ->orWhere('description', 'like', '%' . $search . '%');
+        });
     }
+
+
+    $locations = $query->get();
+    return view('tourlocation::index', compact('locations'));
+}
+
 
     /**
      * Show the form for creating a new resource.
@@ -79,37 +103,75 @@ class TourlocationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id): RedirectResponse
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
-        ]);
+    // public function update(Request $request, $id): RedirectResponse
+    // {
+    //     $request->validate([
+    //         'title' => 'required|string|max:255',
+    //         'description' => 'required|string',
+    //         'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+    //     ]);
 
-        $location = DB::table('locations')->find($id);
+    //     $location = DB::table('locations')->find($id);
         
-        if ($request->has('image')) {
-            if(File::exists($location->path)){
-              $data =  File::delete($location->path);
-            }
-            $file = $request->file('image');
-            $extension =  $file->getClientOriginalExtension();
-            $imageName = time().'.'.$extension;
-            $path = 'uploads/location/';
-            $file->move($path,$imageName);
+    //     if ($request->has('image')) {
+    //         if(File::exists($location->path)){
+    //           $data =  File::delete($location->path);
+    //         }
+    //         $file = $request->file('image');
+    //         $extension =  $file->getClientOriginalExtension();
+    //         $imageName = time().'.'.$extension;
+    //         $path = 'uploads/location/';
+    //         $file->move($path,$imageName);
                        
-        }
+    //     }
   
-       DB::table('locations')->where('id', $id)->update([
-            'name' => $request->title,
-            'description' => $request->description,
-            'path' => $imageName,
-            'status' => 1,
-            'updated_at' => now(),
-        ]);
-        return redirect()->route('tourlocation.index')->with('success', 'Location updated successfully.');
+    //    DB::table('locations')->where('id', $id)->update([
+    //         'name' => $request->title,
+    //         'description' => $request->description,
+    //         'path' => $imageName,
+    //         'status' => 1,
+    //         'updated_at' => now(),
+    //     ]);
+    //     return redirect()->route('tourlocation.index')->with('success', 'Location updated successfully.');
+    // }
+    public function update(Request $request, $id): RedirectResponse
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'description' => 'required|string',
+        'image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
+    ]);
+
+    $location = DB::table('locations')->find($id);
+
+    $imageName = $location->path;
+
+    if ($request->hasFile('image')) {
+        // Delete the old image if it exists
+        if (File::exists($location->path)) {
+            File::delete($location->path);
+        }
+        
+        $file = $request->file('image');
+        $extension = $file->getClientOriginalExtension();
+        $imageName = time() . '.' . $extension;
+        $path = 'uploads/location/';
+        $file->move($path, $imageName);
+
+        $imageName = $imageName;
     }
+
+    DB::table('locations')->where('id', $id)->update([
+        'name' => $request->title,
+        'description' => $request->description,
+        'path' => $imageName,
+        'status' => 1,
+        'updated_at' => now(),
+    ]);
+
+    return redirect()->route('tourlocation.index')->with('success', 'Location updated successfully.');
+}
+
 
     /**
      * Remove the specified resource from storage.

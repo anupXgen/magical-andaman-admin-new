@@ -56,14 +56,7 @@
                         <div class="col-12 mr-2 ">
                         <label class="form-label">Banner Image :</label>
                             <div class="row">
-                                @if(isset($banner['bannerimage']) && $banner['bannerimage'])
-                                @foreach($banner['bannerimage'] as $key=>$val)
-                                <div class="col-3 px-1" style="height: 200px; overflow: hidden;">
-                                    <label class="form-label"></label>
-                                    <img src="{{ url('/') .'/'.  $val['path']; }}" width="100%" height="100%" alt="Girl in a jacket">
-                                </div>
-                                @endforeach
-                                @endif
+                               <img src="{{ url('/uploads/home_banner', $banner['banner_image']) }}" alt="">
                             </div>
 
                         </div>

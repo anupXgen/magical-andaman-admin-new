@@ -80,7 +80,7 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Designation</label>
-                                <input type="text" class="form-control" placeholder="Designation" aria-label="title" id="title" name="designation" {{ $testimonial['designation'] }}>
+                                <input type="text" class="form-control" placeholder="Designation" aria-label="designation" id="designation" name="designation" value="{{$testimonial['designation'] }}">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Description</label>

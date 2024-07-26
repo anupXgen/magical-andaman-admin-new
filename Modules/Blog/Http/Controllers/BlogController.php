@@ -10,7 +10,6 @@ use Modules\Blog\Entities\Blog;
 use File;
 use DB;
 
-   
 class BlogController extends Controller
 {
     function __construct()
@@ -28,11 +27,11 @@ class BlogController extends Controller
             $search = $request->input('search_txt');
             $data->where('blogs.title', 'LIKE', "%$search%");
             $data->orwhere('blogs.subtitle', 'LIKE', "%$search%");
+            $data->orwhere('blogs.author_name', 'LIKE', "%$search%");
         }
         $data = $data->paginate(config('app.pagination_count'));
         //dd(DB::getQueryLog());
-        return view('blog::index', compact('data'))
-            ->with('i', ($request->input('page', 1) - 1) * config('app.pagination_count'));
+        return view('blog::index', compact('data'))->with('i', ($request->input('page', 1) - 1) * config('app.pagination_count'));
     }
     public function create()
     {
@@ -43,37 +42,23 @@ class BlogController extends Controller
         $request->validate([
             'title' => 'required',
             'author' => 'required',
-            'blog_img' => 'required'
+            'path' => 'required',
         ]);
-        $input = $request->all();
-        $insertarray['title'] = $input['title'];
-        $insertarray['subtitle'] = $input['subtitle'];
-        $insertarray['author_name'] = $input['author'];
-        if (!empty($request->input('blog_img'))) {
-            $path2 = public_path('uploads/blog');
-            if (!file_exists($path2)) {
-                mkdir($path2, 0777, true);
-            }
-            foreach ($request->input('blog_img', []) as $file) {
-                $old_path = public_path('uploads/tmp') . '/' . $file;
-                $new_path = public_path('uploads/blog') . '/' . $file;
-                $move = File::move($old_path, $new_path);
-                $insertarray['path'] = 'uploads/blog/' . $file;
-                $insertarray['size'] = filesize($new_path);
-            }
+        $blog = new Blog();
+        $blog->title = $request->input('title');
+        $blog->subtitle = $request->input('subtitle');
+        $blog->author_name = $request->input('author');
+
+        if ($request->hasFile('path')) {
+            $file = $request->file('path');
+            //($file);
+            $filename = time() . '_' . $file->getClientOriginalName();
+            $file->move(public_path('uploads/blog'), $filename);
+            // $path = $file->storeAs('uploads/home_banner', $filename, 'public');
+            $blog->path = $filename;
         }
-        $result = Blog::create($insertarray);
-        $inserted_id = $result->id;
-        if (!empty($request->input('remove_blog_img', []))) {
-            foreach ($request->input('remove_blog_img', []) as $deletefile) {
-                $image_path = public_path('uploads/blog') . '/' . $deletefile;
-                if (File::exists($image_path)) {
-                    File::delete($image_path);
-                }
-            }
-        }
-        return redirect()->route('blog.index')
-            ->with('success', 'Blog created successfully');
+        $blog->save();
+        return redirect()->route('blog.index')->with('success', 'Blog created successfully');
     }
     public function show($id)
     {
@@ -87,100 +72,81 @@ class BlogController extends Controller
     }
     public function update(Request $request, $id): RedirectResponse
     {
-        $request->validate([
-            'title' => 'required',
-            'author' => 'required',
-            //'destination_img' => 'required'
-        ]);
-        $input = $request->all();
-        $insertarray['title'] = $input['title'];
-        $insertarray['author_name'] = $input['author'];
-        $insertarray['subtitle'] = $input['subtitle'];
-        if (!empty($request->input('blog_img'))) {
-            $path2 = public_path('uploads/blog');
-            if (!file_exists($path2)) {
-                mkdir($path2, 0777, true);
+        // dd($id);
+        $blog = Blog::findOrFail($id);
+        $blog->title = $request->input('title');
+        $blog->subtitle = $request->input('subtitle');
+        $blog->author_name = $request->input('author');
+
+        if ($request->hasFile('path')) {
+            $oldImagePath = public_path('uploads/blog/' . $blog->path);
+
+            if ($blog->path && file_exists($oldImagePath)) {
+                unlink($oldImagePath);
             }
-            foreach ($request->input('blog_img', []) as $file) {
-                $old_path = public_path('uploads/tmp') . '/' . $file;
-                $new_path = public_path('uploads/blog') . '/' . $file;
-                $move = File::move($old_path, $new_path);
-                $insertarray['path'] = 'uploads/blog/' . $file;
-                $insertarray['size'] = filesize($new_path);
-            }
+
+            $image = $request->file('path');
+            $imageName = time() . '.' . $image->getClientOriginalExtension();
+            $image->move(public_path('uploads/blog'), $imageName);
+
+            $blog->path = $imageName;
         }
-        $result = Blog::find($id)->update($insertarray);
-        if (!empty($request->input('remove_blog_img', []))) {
-            foreach ($request->input('remove_blog_img', []) as $deletefile) {
-                $image_path = public_path('uploads/blog') . '/' . $deletefile;
-                if (File::exists($image_path)) {
-                    File::delete($image_path);
-                }
-            }
-        }
-        if (!empty($request->input('exists_remove_blog_img', []))) {
-            foreach ($request->input('exists_remove_blog_img', []) as $key => $existsdeletefile) {
-                $image_path = public_path('uploads/blog') . '/' . $existsdeletefile;
-                if (File::exists($image_path)) {
-                    File::delete($image_path);
-                }
-            }
-        }
-        return redirect()->route('blog.index')
-            ->with('success', 'Blog created successfully');
+
+        $blog->save();
+        
+        return redirect()->route('blog.index')->with('success', 'Blog updated successfully');
     }
     public function destroy($id)
     {
-        Blog::find($id)->update(array('delete' => '1'));
-        return redirect()->route('blog.index')
-            ->with('success', 'Blog deleted successfully');
+        Blog::find($id)->update(['delete' => '1']);
+        return redirect()->route('blog.index')->with('success', 'Blog deleted successfully');
     }
-    public function bloglist_api(Request $request, $id = '')
-    {
-        $success = 0;
-        $msg = 'Something went wrong! Please try again..';
-        $blog = Blog::where('delete', 0)->where('status', 0);
-        // $latest_blogs = Blog::orderBy('id', 'DESC')->limit(4)->get();
+    // public function bloglist_api(Request $request, $id = '')
+    // {
+    //     $success = 0;
+    //     $msg = 'Something went wrong! Please try again..';
+    //     $blog = Blog::where('delete', 0)->where('status', 0);
+    //     // $latest_blogs = Blog::orderBy('id', 'DESC')->limit(4)->get();
 
-        if (!empty($id)) {
-            $blog = $blog->where('id', $id);
-        }
-        if (!empty($request->input('search_txt'))) {
-            $search = $request->input('search_txt');
-            // $blog->where('blogs.title', 'LIKE', "%$search%");
-            // $blog->orwhere('blogs.subtitle', 'LIKE', "%$search%");
-            $blog = $blog->where(function ($q1) use ($search) {
-                $q1->where(function ($q2) use ($search) {
-                    $q2->where('blogs.title', 'LIKE', "%$search%");
-                })
-                    ->orWhere(function ($q2) use ($search) {
-                        $q2->where('blogs.subtitle', 'LIKE', "%$search%");
-                    });
-            });
-        }
-        if (empty($id)) {
-            if (!empty($request->input('per_page')) && !empty($request->input('page_no')) && $request->input('page_no') > 0) {
-                $per_page = $request->input('per_page', 10);
-                $page_no = $request->input('page_no',1);
-                $offset = ($page_no - 1) * $per_page;
-                $blog = $blog->orderBy('id', 'DESC')->limit($per_page)->offset($offset)->get();
-            } else {
-                 $blog = $blog->orderBy('id', 'DESC')->get();
+    //     if (!empty($id)) {
+    //         $blog = $blog->where('id', $id);
+    //     }
+    //     if (!empty($request->input('search_txt'))) {
+    //         $search = $request->input('search_txt');
+    //         // $blog->where('blogs.title', 'LIKE', "%$search%");
+    //         // $blog->orwhere('blogs.subtitle', 'LIKE', "%$search%");
+    //         $blog = $blog->where(function ($q1) use ($search) {
+    //             $q1->where(function ($q2) use ($search) {
+    //                 $q2->where('blogs.title', 'LIKE', "%$search%");
+    //             })
+    //                 ->orWhere(function ($q2) use ($search) {
+    //                     $q2->where('blogs.subtitle', 'LIKE', "%$search%");
+    //                 });
+    //         });
+    //     }
+    //     if (empty($id)) {
+    //         if (!empty($request->input('per_page')) && !empty($request->input('page_no')) && $request->input('page_no') > 0) {
+    //             $per_page = $request->input('per_page', 10);
+    //             $page_no = $request->input('page_no',1);
+    //             $offset = ($page_no - 1) * $per_page;
+    //             $blog = $blog->orderBy('id', 'DESC')->limit($per_page)->offset($offset)->get();
+    //         } else {
+    //              $blog = $blog->orderBy('id', 'DESC')->get();
 
-            }
-           
-        } else {
-           
-            $blog = $blog->get();
-        }
-        if (!$blog->isEmpty()) {
-            $success = 1;
-            $msg = 'Blog are listed successfully';
-        } else {
-            $success = 0;
-            $msg = 'No data found.';
-        }
-        $response = ['success' => $success, 'message' => $msg, 'data' => $blog];
-        return response($response, 200);
-    }
+    //         }
+
+    //     } else {
+
+    //         $blog = $blog->get();
+    //     }
+    //     if (!$blog->isEmpty()) {
+    //         $success = 1;
+    //         $msg = 'Blog are listed successfully';
+    //     } else {
+    //         $success = 0;
+    //         $msg = 'No data found.';
+    //     }
+    //     $response = ['success' => $success, 'message' => $msg, 'data' => $blog];
+    //     return response($response, 200);
+    // }
 }

@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="card-body">
-          <table id="" class="table table-bordered text-nowrap w-100 mb-2">
+          <table id="" class="table table-striped w-100 mb-2">
             <thead>
               <tr>
                 <th>Name</th>

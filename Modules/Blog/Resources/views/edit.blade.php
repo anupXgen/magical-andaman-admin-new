@@ -71,7 +71,7 @@
                             </ul>
                         </div>
                         @endif
-                        <form class="row g-3 mt-0" method="POST" action="{{ route('blog.update',$blog['id']) }}" id="creation_form" name="creation_form">
+                        <form class="row g-3 mt-0" method="POST" action="{{ route('blog.update',$blog['id']) }}" id="creation_form" name="creation_form" enctype="multipart/form-data">
                             @csrf
                             @method('PATCH')
                             <div class="col-md-6">
@@ -86,16 +86,14 @@
                                 <label class="form-label">Subtitle</label>
                                 <textarea class="form-control" placeholder="Subtitle" aria-label="Subtitle" id="subtitle" name="subtitle" rows='4' cols='50'>{{ $blog['subtitle'] }}</textarea>
                             </div>
-                            {{-- <div class="col-md-12">
+                            <div class="col-md-12">
                                 <label class="form-label" for="document">Images </label><span class="text-muted"> Only JPEG and JPG file types are allowed</span>
-                                <!-- <div class="field" align="left">
-                                    <input class="form-control filepond" type="file" id="blog" name="blog[]" multiple />
-                                </div> -->
-                                <div class="form-group">
-                                    <div class="needsclick dropzone" id="document-dropzone"></div>
-
+                                 <div class="field" align="left">
+                                    <input class="form-control filepond" type="file" id="" name="path" />
                                 </div>
-                            </div> --}}
+                                <img src="{{ url('/uploads/blog', $blog['path']) }}" alt="hello" width="200px">
+                              
+                            </div>
 
                             <div class="col-12">
                                 <button type="button" class="btn btn-light" onclick="javascript:location.reload()">Cancel</button>
@@ -113,33 +111,34 @@
 @push('js')
 <script type="text/javascript">
 
-    $(document).on('submit', "#creation_form", function(e) {
-        //e.preventDefault();
-        $(".invalid_msg").remove();
-        var error = 0;
-        if ($.trim($("#title").val()) == '') {
-            $("#title").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_title'>Please enter a title.</div>");
-            $("#invalid_msg_title").show();
-            error++;
-        }
-        if ($.trim($("#author").val()) == '') {
-            $("#author").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_author'>Please enter author name.</div>");
-            $("#invalid_msg_author").show();
-            error++;
-        }
-        if ($("input[name='blog_img[]']").length == 0) {
-            $(".dz-message").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_blog_img'>Please upload a image.</div>");
-            $("#invalid_msg_blog_img").show();
-            error++;
-        }
-        if (error == 0) {
-            $('form').find('input[name="blog_img[]"][is_exists="1"]').remove();
-            return true;
-            $("#creation_form").submit();
-        } else {
-            return false;
-        }
+    // $(document).on('submit', "#creation_form", function(e) {
+    //     //alert('hello');
+    //     //e.preventDefault();
+    //     $(".invalid_msg").remove();
+    //     var error = 0;
+    //     // if ($.trim($("#title").val()) == '') {
+    //     //     $("#title").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_title'>Please enter a title.</div>");
+    //     //     $("#invalid_msg_title").show();
+    //     //     error++;
+    //     // }
+    //     // if ($.trim($("#author").val()) == '') {
+    //     //     $("#author").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_author'>Please enter author name.</div>");
+    //     //     $("#invalid_msg_author").show();
+    //     //     error++;
+    //     // }
+    //     // if ($("input[name='blog_img[]']").length == 0) {
+    //     //     $(".dz-message").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_blog_img'>Please upload a image.</div>");
+    //     //     $("#invalid_msg_blog_img").show();
+    //     //     error++;
+    //     // }
+    //     // if (error == 0) {
+    //     //     $('form').find('input[name="blog_img[]"][is_exists="1"]').remove();
+    //     //     return true;
+    //     //     $("#creation_form").submit();
+    //     // } else {
+    //     //     return false;
+    //     // }
 
-    });
+    // });
 </script>
 @endpush

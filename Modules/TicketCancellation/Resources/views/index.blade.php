@@ -21,16 +21,16 @@
                         <div class="d-sm-flex d-block align-items-center justify-content-between">
                             <div class="h5 fw-semibold mb-0"> </div>
                             <div class="d-flex mt-sm-0 mt-2 align-items-center">
-                                <form id='searchform' name='searchform' method="GET" action="{{route('ticketcancellation.index')}}">
-                                  @csrf
+                                <form id='searchform' name='searchform'>
+                                    @csrf
                                     <div class="input-group">
                                         <select class="form-select" aria-label="Default select example" name="type">
-                                            <option value="">Sekect One</option>
-                                            <option value="ferry">Ferry</option>
-                                            <option value="boat">Boat</option>
+                                            <option value="">ALL</option>
+                                            <option value="ferry">FERRY</option>
+                                            <option value="boat">BOAT</option>
                                         </select>
-                                        <input type="text" class="form-control bg-light border-0" aria-describedby=""
-                                            id='date' name='date' placeholder="Select Date">
+                                        {{-- <input type="text" class="form-control bg-light border-0" aria-describedby=""
+                                            id='date' name='date' placeholder="Select Date"> --}}
                                         <button class="btn btn-light" type="submit" id="search-testimonial"><i
                                                 class="ri-search-line text-muted"></i></button>
                                     </div>
@@ -39,35 +39,74 @@
                             </div>
                         </div>
                     </div>
+                    
+                    @if (session('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
 
                     <div class="card-body">
-                        <table id="" class="table table-bordered text-nowrap w-100 mb-2">
+                        <table id=""  class="table table-striped w-100 mb-2">
                             <thead>
                                 <tr>
                                     <th>No</th>
                                     <th>Type</th>
+                                    <th>Order Id</th>
                                     <th>Customer Name</th>
                                     <th>Mobile No</th>
+                                    <th>Ship Name</th>
                                     <th>Date Of Journey</th>
-                                    <th>Booked At</th>
-                                    <th>Resident</th>
+                                    <th>Details</th>
                                 </tr>
                             </thead>
                             <tbody>
-                              @php
-                                $i= 1;
-                              @endphp
+                                @php
+                                    $i = 1;
+                                    use Carbon\Carbon;
+                                @endphp
                                 <tr>
-                                  @foreach($all_datas as $data)
-                                  <th>{{$i++}}</th>
-                                    <td>{{ ucfirst($data->type) }}</td>
-                                    <td>{{ucfirst($data->c_name) }}</td>
-                                    <td>{{$data->c_mobile}}</td>
-                                    <td>{{$data->date_of_jurney}}</td>
-                                    <td>{{$data->created_at}}</td>
-                                    <td>{{$data->resident}}</td>
+                                    @foreach ($all_datas as $datas)
+                                        @php
+
+                                            $departureTime = Carbon::createFromFormat('H:i:s', $datas->departure_time);
+                                            $arrivalTime = Carbon::createFromFormat('H:i:s', $datas->arrival_time);
+
+                                            $totalSeconds = $arrivalTime->diffInSeconds($departureTime);
+
+                                            $hours = floor($totalSeconds / 3600);
+                                            $minutes = floor(($totalSeconds / 60) % 60);
+                                            $seconds = $totalSeconds % 60;
+
+                                            $formattedHours = str_pad($hours, 2, '0', STR_PAD_LEFT);
+                                            $formattedMinutes = str_pad($minutes, 2, '0', STR_PAD_LEFT);
+                                            $formattedSeconds = str_pad($seconds, 2, '0', STR_PAD_LEFT);
+                                        @endphp
+
+                                        <th>{{ $i++ }}</th>
+                                        <td><button type="button" class="btn {{ $datas->type == 'ferry' ? 'btn-primary' : 'btn-info' }} btn-sm">{{ ucfirst($datas->type) }}</button></td>
+
+                                        <td>{{ $datas->order_id }}</td>
+                                        <td>{{ ucfirst($datas->c_name) }}</td>
+                                        <td>{{ $datas->c_mobile }}</td>
+                                        <td>{{ $datas->ship_name }}</td>
+                                        <td>{{ date('d-m-Y', strtotime($datas->date_of_jurney)) }}
+
+                                            - <span>{{ "{$formattedHours}:{$formattedMinutes}" }}
+
+                                            </span>
+                                            <br>
+                                            <span>
+                                                {{ $datas->from_location }} - {{ $datas->to_location }}
+
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <a class="btn" href="{{ route('ticketcancellation.edit', $datas->id) }}"><i
+                                                    class='bx bxs-show fs-4'></i></a>
+                                        </td>
                                 </tr>
-                            @endforeach
+                                @endforeach
                             </tbody>
                         </table>
 
@@ -76,26 +115,3 @@
             </div>
         </div>
     @endsection
-    @push('js')
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-        <script type="text/javascript">
-            $(function() {
-                var dateFormat = "dd-mm-yy";
-
-                var today = new Date();
-                var maxDate = new Date(today.getFullYear(), today.getMonth(), today.getDate());
-
-                $("#date").datepicker({
-                    defaultDate: "+1w",
-                    changeMonth: true,
-                    numberOfMonths: 1,
-                    dateFormat: dateFormat,
-                    maxDate: maxDate
-                });
-            });
-        </script>
-    @endpush

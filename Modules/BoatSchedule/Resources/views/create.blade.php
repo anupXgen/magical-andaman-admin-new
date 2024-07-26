@@ -216,10 +216,7 @@
         document.getElementById('chek_box').value = this.checked ? 'Y' : 'N';
     });
 
-    });
-
-  
-
+});
 
 </script>
 

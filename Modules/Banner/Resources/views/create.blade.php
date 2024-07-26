@@ -68,15 +68,15 @@
                             </ul>
                         </div>
                         @endif
-                        <form class="row g-3 mt-0" method="POST" action="{{ route('banner.store') }}" id="creation_form" name="creation_form">
+                        <form class="row g-3 mt-0" method="POST" action="{{ route('banner.store') }}" id="creation_form" name="creation_form" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-6">
                                 <label class="form-label">Title</label>
-                                <input type="text" class="form-control" placeholder="Title" aria-label="Title" id="title" name="title">
+                                <input type="text" class="form-control" placeholder="Title" aria-label="Title" id="title" name="title" value="{{old('title')}}">
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Subtitle</label>
-                                <textarea class="form-control" placeholder="Subtitle" aria-label="Subtitle" id="subtitle" name="subtitle" rows='4' cols='50'> </textarea>
+                                <textarea class="form-control" placeholder="Subtitle" aria-label="Subtitle" id="subtitle" name="subtitle" rows='4' cols='50' >{{old('subtitle')}} </textarea>
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label">Button Text</label>
@@ -88,13 +88,13 @@
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label" for="document">Images </label><span class="text-muted"> Only JPEG and JPG file types are allowed</span>
-                                <!-- <div class="field" align="left">
-                                    <input class="form-control filepond" type="file" id="banner" name="banner[]" multiple />
-                                </div> -->
-                                <div class="form-group">
+                                 <div class="field" align="left">
+                                    <input class="form-control filepond" type="file" id="banner_image" name="banner_image" />
+                                </div>
+                                {{-- <div class="form-group">
                                     <div class="needsclick dropzone" id="document-dropzone"></div>
 
-                                </div>
+                                </div> --}}
                             </div>
 
                             <div class="col-12">
@@ -110,7 +110,7 @@
     </div>
 </div>
 @endsection
-@push('js')
+{{-- @push('js')
 <script type="text/javascript">
     var uploadedDocumentMap = {}
     Dropzone.options.documentDropzone = {
@@ -258,4 +258,80 @@
 
     });
 </script>
-@endpush
+@endpush --}}
+
+{{-- @push('js')
+<script type="text/javascript">
+    var uploadedDocumentMap = {}
+
+    Dropzone.options.documentDropzone = {
+        url: "{{ url('upload-image') }}",
+        maxFilesize: 25, // MB
+        acceptedFiles: 'image/jpeg,image/jpg,png',
+        maxFiles: 1,
+        addRemoveLinks: true,
+        headers: {
+            'X-CSRF-TOKEN': "{{ csrf_token() }}"
+        },
+        success: function(file, response) {
+            $("#invalid_msg_banner_img").remove();
+            if (response.name != '') {
+                $('form').append('<input type="hidden" name="banner_img[]" value="' + response.name + '">')
+                uploadedDocumentMap[file.name] = response.name
+            }
+        },
+        removedfile: function(file) {
+            file.previewElement.remove()
+            var name = ''
+            if (typeof file.file_name !== 'undefined') {
+                name = file.file_name
+            } else {
+                name = uploadedDocumentMap[file.name]
+            }
+            $('form').find('input[name="banner_img[]"][value="' + name + '"]').remove();
+            $('form').append('<input type="hidden" name="remove_banner_img[]" value="' + name + '">')
+        },
+        init: function() {
+            @if(isset($project) && $project->document)
+            var files = {!! json_encode($project->document) !!}
+            for (var i in files) {
+                var file = files[i]
+                this.options.addedfile.call(this, file)
+                file.previewElement.classList.add('dz-complete')
+                $('form').append('<input type="hidden" name="banner_img[]" value="' + file.file_name + '">')
+            }
+            @endif
+        },
+        maxfilesexceeded: function(file) {
+            this.removeAllFiles();
+            this.addFile(file);
+        }
+    }
+
+    $(document).on('submit', "#creation_form", function(e) {
+        $(".invalid_msg").remove();
+        var error = 0;
+        if ($.trim($("#title").val()) == '') {
+            $("#title").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_title'>Please enter a title.</div>");
+            $("#invalid_msg_title").show();
+            error++;
+        }
+        if ($.trim($("#subtitle").val()) == '') {
+            $("#subtitle").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_subtitle'>Please enter a subtitle.</div>");
+            $("#invalid_msg_subtitle").show();
+            error++;
+        }
+        if ($("input[name='banner_img[]']").length == 0) {
+            $(".dz-message").after("<div class='invalid-feedback invalid_msg' id='invalid_msg_banner_img'>Please upload an image.</div>");
+            $("#invalid_msg_banner_img").show();
+            error++;
+        }
+        if (error == 0) {
+            return true;
+            $("#creation_form").submit();
+        } else {
+            return false;
+        }
+    });
+</script>
+@endpush --}}

@@ -19,13 +19,26 @@ class BoatScheduleController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $boat_schedules = BoatSchedule::get();
-        
-        $data = compact('boat_schedules');
+        $searchText = $request->input('search_txt');
 
+        $boat_schedules = DB::table('boat_schedule')
+        ->leftJoin('boat_schedule_price', function ($join) {
+            $join->on('boat_schedule.id', '=', 'boat_schedule_price.boat_schedule_id')
+                 ->whereRaw('boat_schedule_price.id = (select min(id) from boat_schedule_price as bsp where bsp.boat_schedule_id = boat_schedule.id)');
+        })
+        ->select('boat_schedule.*', 'boat_schedule_price.per_passenger_price');
+        if ($searchText) {
+            $boat_schedules->where('boat_schedule.title', 'like', '%' . $searchText . '%');
+        }
+    
+        $boat_schedules = $boat_schedules->get();
+      
+          
+             $data = compact('boat_schedules');    
         return view('boatschedule::index')->with($data);
+     
     }
 
     /**
@@ -40,40 +53,34 @@ class BoatScheduleController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request): RedirectResponse
-    {
-        
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
+        'from_date' => 'required|date_format:d-m-Y',
+        'to_date' => 'required|date_format:d-m-Y',
+    ]);
+
+    $checkboxChecked = $request->input('chek_box') === 'Y';
+
+    if ($checkboxChecked) {
         $request->validate([
-            'title' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
-            'from_date' => 'required|date_format:d-m-Y',
-            'to_date' => 'required|date_format:d-m-Y',
-            'price' => [
-                'required',
-                'not_in:0', 
-            ],
+            'passenger.*' => 'required|numeric|min:1',
         ]);
+    }
 
-        $validator = Validator::make($request->all(), [
-            'passenger.*' => 'numeric|min:1',
-        ]);
-        if ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
-        }
+    $from_date = Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
+    $to_date = Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
 
-         
-        $from_date = Carbon::createFromFormat('d-m-Y', $request->from_date)->format('Y-m-d');
-        $to_date = Carbon::createFromFormat('d-m-Y', $request->to_date)->format('Y-m-d');
+    if ($request->has('image')) {
+        $file = $request->file('image');
+        $extension = $file->getClientOriginalExtension();
+        $imageName = time() . '.' . $extension;
+        $path = 'uploads/boat/';
+        $file->move($path, $imageName);
+    }
+    $is_chartered_boat = $checkboxChecked ? 'Y' : 'N';
 
-        if ($request->has('image')) {
-            $file = $request->file('image');
-            $extension =  $file->getClientOriginalExtension();
-            $imageName = time().'.'.$extension;
-            $path = 'uploads/boat/';
-            $file->move($path,$imageName);
-        }
-        
-        $is_chartered_boat = !empty($request->chek_box) ?  'Y' : 'N';
-        
         $boatSchedule = BoatSchedule::create([
             'title' => $request->title,
             'status' => $request->status,
@@ -83,12 +90,9 @@ class BoatScheduleController extends Controller
             'image' => $imageName,
             'is_chartered_boat' => $is_chartered_boat
         ]);
-    
         $lastInsertedId = $boatSchedule->id;
-        
 
-        if ($boatSchedule) {
-
+        if ($checkboxChecked) {
             foreach ($request->input('passenger') as $index => $value) {
                 DB::table('boat_schedule_price')->insert([
                     'boat_schedule_id' => $lastInsertedId,
@@ -99,12 +103,11 @@ class BoatScheduleController extends Controller
                 ]);
             }
         }
-    
-        return redirect()->route('boatschedule.index')->with('success', 'Boat Create successfully.');
+  
 
+    return redirect()->route('boatschedule.index')->with('success', 'Boat created successfully.');
+}
 
-
-    }
 
     /**
      * Show the specified resource.

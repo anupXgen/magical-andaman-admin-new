@@ -44,7 +44,7 @@ class FerryScheduleController extends Controller
         $ferry_schedules = $query->paginate($perPage);
         
         return view('ferryschedule::index', compact('ferry_schedules'))
-        ->with('i', ($request->input('page', 1) - 1) * $perPage);;
+        ->with('i', ($request->input('page', 1) - 1) * $perPage);
     }
 
     /**

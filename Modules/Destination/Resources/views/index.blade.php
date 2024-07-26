@@ -44,7 +44,7 @@
           </div>
         </div>
         <div class="card-body">
-          <table id="" class="table table-bordered text-nowrap w-100 mb-2">
+          <table id="" class="table table-striped w-100 mb-2">
             <thead>
               <tr>
                 <th>No</th>
@@ -59,7 +59,7 @@
                 <td>{{ ++$i }}</td>
                 <td>{{ ucfirst($destination->name) }}</td>
                 <td>{{ ucfirst(substr($destination->subtitle,0, 100).'..') }}</td>
-                <td>
+                {{-- <td>
                   <a class="btn btn-info" href="{{ route('destination.show',$destination->id) }}">Show</a>
                   @can('destination-edit')
                   <a class="btn btn-primary" href="{{ route('destination.edit',$destination->id) }}">Edit</a>
@@ -69,7 +69,34 @@
                   {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                   {!! Form::close() !!}
                   @endcan
-                </td>
+                </td> --}}
+
+                <td>
+                  <a class="btn"
+                      href="{{ route('destination.show', $destination->id) }}"><i
+                          class='bx bxs-show fs-4'></i></a>
+                  @can('destination-edit')
+                      <a class="btn "
+                          href="{{ route('destination.edit', $destination->id) }}"><i
+                              class='bx bxs-edit fs-4'></i></a>
+                  @endcan
+          
+                  @can('destination-delete')
+                      {!! Form::open([
+                          'method' => 'DELETE',
+                          'onsubmit' => 'return confirmDelete()',
+                          'route' => ['destination.destroy', $destination->id],
+                          'style' => 'display:inline',
+                      ]) !!}
+                      {!! Form::button('<i class="bx bxs-trash-alt"></i>', [
+                          'type' => 'submit',
+                          'class' => 'btn',
+                          'onclick' => 'return confirmDelete()',
+                      ]) !!}
+                      {!! Form::close() !!}
+                  @endcan
+              </td>
+
               </tr>
               @endforeach
             </tbody>

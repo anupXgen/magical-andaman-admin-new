@@ -11,7 +11,7 @@
                 <ol class="breadcrumb mb-0">
                     <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
                     <li class="breadcrumb-item"><a href="{{ route('tourlocation.index') }}">Location</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Edit</li>
+                    <li class="breadcrumb-item active" aria-current="page">Tour Location Edit</li>
                 </ol>
             </nav>
         </div>
@@ -21,7 +21,7 @@
             <div class="card custom-card">
                 <div class="card-header d-block">
                     <div class="d-sm-flex d-block align-items-center justify-content-between">
-                        <div class="h5 fw-semibold mb-0">Location Edit</div>
+                        <div class="h5 fw-semibold mb-0">Tour Location Edit</div>
                         <div class="d-flex mt-sm-0 mt-2 align-items-center">
                             <a href="{{ route('tourlocation.index') }}" class="btn btn-warning-light ms-2">Back</a>
                         </div>

@@ -43,7 +43,7 @@
                 <div class="card custom-card">
                     <div class="card-body p-5">
                         <p class="h5 fw-semibold mb-2 text-center">Sign In</p>
-                        <p class="mb-4 text-muted op-7 fw-normal text-center">Welcome back Jhon !</p>
+                        <p class="mb-4 text-muted op-7 fw-normal text-center"></p>
                         @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -93,7 +93,7 @@
                         <div class="text-center my-3 authentication-barrier">
                             <span>OR</span>
                         </div>
-                        <div class="btn-list text-center">
+                        {{-- <div class="btn-list text-center">
                             <button class="btn btn-icon btn-light">
                                 <i class="ri-facebook-line fw-bold text-dark op-7"></i>
                             </button>
@@ -103,7 +103,7 @@
                             <button class="btn btn-icon btn-light">
                                 <i class="ri-twitter-line fw-bold text-dark op-7"></i>
                             </button>
-                        </div>
+                        </div> --}}
                     </div>
                 </div>
             </div>

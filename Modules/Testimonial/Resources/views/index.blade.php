@@ -44,7 +44,13 @@
           </div>
         </div>
         <div class="card-body">
-          <table id="" class="table table-bordered text-nowrap w-100 mb-2">
+          @if (session('success'))
+          <div class="alert alert-success">
+              {{ session('success') }}
+          </div>
+      @endif
+        <div class="card-body">
+          <table id="" class="table table-striped w-100 mb-2">
             <thead>
               <tr>
                 <th>No</th>
@@ -58,8 +64,8 @@
               <tr>
                 <td>{{ ++$i }}</td>
                 <td>{{ ucfirst($testimonial->title) }}</td>
-                <td>{{ ucfirst(substr($testimonial->subtitle,0, 100).'..') }}</td>
-                <td>
+                <td style="white-space: pre-wrap; max-width: 300px; word-wrap: break-word;">{{$testimonial->subtitle }}</td>
+                {{-- <td>
                   <a class="btn btn-info" href="{{ route('testimonial.show',$testimonial->id) }}">Show</a>
                   @can('testimonial-edit')
                   <a class="btn btn-primary" href="{{ route('testimonial.edit',$testimonial->id) }}">Edit</a>
@@ -69,7 +75,34 @@
                   {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                   {!! Form::close() !!}
                   @endcan
+                </td> --}}
+
+                <td>
+                  <a class="btn"
+                      href="{{ route('testimonial.show', $testimonial->id) }}"><i
+                          class='bx bxs-show fs-4'></i></a>
+                  @can('testimonial-edit')
+                      <a class="btn "
+                          href="{{ route('testimonial.edit', $testimonial->id) }}"><i
+                              class='bx bxs-edit fs-4'></i></a>
+                  @endcan
+          
+                  @can('testimonial-delete')
+                      {!! Form::open([
+                          'method' => 'DELETE',
+                          'onsubmit' => 'return confirmDelete()',
+                          'route' => ['testimonial.destroy', $testimonial->id],
+                          'style' => 'display:inline',
+                      ]) !!}
+                      {!! Form::button('<i class="bx bxs-trash-alt"></i>', [
+                          'type' => 'submit',
+                          'class' => 'btn',
+                          'onclick' => 'return confirmDelete()',
+                      ]) !!}
+                      {!! Form::close() !!}
+                  @endcan
                 </td>
+
               </tr>
               @endforeach
             </tbody>
@@ -79,5 +112,9 @@
       </div>
     </div>
   </div>
-
+  <script type="text/javascript">
+    function confirmDelete() {
+        return confirm('Are you sure you want to delete this item?');
+    }
+</script>
   @endsection

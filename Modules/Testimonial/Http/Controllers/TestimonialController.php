@@ -43,6 +43,7 @@ class testimonialController extends Controller
             'title' => 'required',
             'testimonial_img' => 'required'
         ]);
+       // dd($request);
         $input = $request->all();
         $insertarray['title'] = $input['title'];
         $insertarray['subtitle'] = $input['subtitle'];
@@ -81,6 +82,7 @@ class testimonialController extends Controller
     public function edit($id)
     {
         $testimonial = Testimonial::find($id)->toArray();
+        //dd($testimonial);
         return view('testimonial::edit', compact('testimonial'));
     }
     public function update(Request $request, $id): RedirectResponse

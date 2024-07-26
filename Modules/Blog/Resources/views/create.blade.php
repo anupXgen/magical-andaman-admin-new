@@ -68,7 +68,7 @@
                             </ul>
                         </div>
                         @endif
-                        <form class="row g-3 mt-0" method="POST" action="{{ route('blog.store') }}" id="creation_form" name="creation_form">
+                        <form class="row g-3 mt-0" method="POST" action="{{ route('blog.store') }}" id="creation_form" name="creation_form" enctype="multipart/form-data">
                             @csrf
                             <div class="col-md-6">
                                 <label class="form-label">Title</label>
@@ -84,11 +84,9 @@
                             </div>
                             <div class="col-md-12">
                                 <label class="form-label" for="document">Images </label><span class="text-muted"> Only JPEG and JPG file types are allowed</span>
-                                <div class="form-group">
-                                    <div class="needsclick dropzone" id="document-dropzone"></div>
-
-                                </div>
+                              <input type="file" name ="path" >
                             </div>
+
                             <div class="col-12">
                                 <button type="button" class="btn btn-light" onclick="javascript:location.reload()">Cancel</button>
                                 <button type="submit" class="btn btn-primary">Save</button>
@@ -103,7 +101,7 @@
 </div>
 @endsection
 @push('js')
-<script type="text/javascript">
+{{-- <script type="text/javascript">
     var uploadedDocumentMap = {}
     Dropzone.options.documentDropzone = {
         url: "{{ url('upload-image') }}",
@@ -165,5 +163,5 @@
         }
 
     });
-</script>
+</script> --}}
 @endpush
